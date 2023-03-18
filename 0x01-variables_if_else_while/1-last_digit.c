@@ -3,14 +3,16 @@
 #include <stdio.h>
 
 /**
- *main - Prints the last digit of a randomly generated number
- *and whether it is greater than 5, less than 6, or 0.
- *Return: 0 (Success)
+ * main - Prints the last digit of a randomly generated number
+ * and whether it is greater than 5, less than 6, or 0.
+ * Return: 0 (Success)
+ *
  */
+
 int main(void)
+
 {
-	int n;
-	int ld;
+	int n, ld;
 
 	srand(time(0));
 	n = rand() - RAND_MAX / 2;
