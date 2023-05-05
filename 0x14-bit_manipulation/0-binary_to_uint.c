@@ -1,25 +1,27 @@
 #include "main.h"
 
 /**
- * binary_to_uint - converts a binary number to unsigned int
- * @b: string containing the binary number
+ * binary_to_uint - converts a binary number to an unsigned integer
+ * @binary_string: pointer to the binary number as a string
  *
- * Return: the converted number
+ * Return: the unsigned integer value of the binary number, or 0 if binary_string
+ * is NULL or contains a character that is not '0' or '1'
  */
-unsigned int binary_to_uint(const char *b)
+unsigned int binary_to_uint(const char *binary_string)
 {
-	int i;
-	unsigned int dec_val = 0;
+	unsigned int decimal_value = 0;
+	int index;
 
-	if (!b)
+	if (binary_string == NULL)
 		return (0);
 
-	for (i = 0; b[i]; i++)
+	for (index = 0; binary_string[index] != '\0'; index++)
 	{
-		if (b[i] < '0' || b[i] > '1')
+		if (binary_string[index] != '0' && binary_string[index] != '1')
 			return (0);
-		dec_val = 2 * dec_val + (b[i] - '0');
+
+		decimal_value = (decimal_value << 1) | (binary_string[index] - '0');
 	}
 
-	return (dec_val);
+	return (decimal_value);
 }
