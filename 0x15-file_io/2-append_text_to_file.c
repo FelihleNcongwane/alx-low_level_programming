@@ -1,16 +1,17 @@
 #include "main.h"
 
 /**
- * create_file - Creates a file and writes text to it.
- * @filename: A pointer to the name of the file to create.
- * @text_content: A pointer to a string to write to the file.
+ * append_text_to_file - Appends text at the end of a file.
+ * @filename: A pointer to the name of the file.
+ * @text_content: The string to add to the end of the file.
  *
- * Return: If the function fails to create the file or write to it - returns -1.
+ * Return: If the function fails or filename is NULL - returns -1.
+ *         If the file does not exist or the user lacks write permissions - returns -1.
  *         Otherwise, returns 1 on success.
  */
-int create_file(const char *filename, char *text_content)
+int append_text_to_file(const char *filename, char *text_content)
 {
-    int fd, w, len = 0;
+    int o, w, len = 0;
 
     /* Check if filename is NULL */
     if (filename == NULL)
@@ -23,18 +24,18 @@ int create_file(const char *filename, char *text_content)
             len++;
     }
 
-    /* Open the file for creating, writing, and truncating if it exists */
-    fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0600);
+    /* Open the file for writing, appending if it exists */
+    o = open(filename, O_WRONLY | O_APPEND);
 
-    /* Write the content of text_content to the file */
-    w = write(fd, text_content, len);
+    /* Write the content of text_content to the end of the file */
+    w = write(o, text_content, len);
 
-    /* Check for errors in file creation or writing */
-    if (fd == -1 || w == -1)
+    /* Check for errors in file opening or writing */
+    if (o == -1 || w == -1)
         return (-1);
 
     /* Close the file */
-    close(fd);
+    close(o);
 
     /* Return 1 on success */
     return (1);
