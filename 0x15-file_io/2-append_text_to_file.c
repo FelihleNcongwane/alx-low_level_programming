@@ -1,47 +1,41 @@
 #include "main.h"
 
 /**
- * append_text_to_file - Appends text at the end of a file.
- * @filename: A pointer to the name of the file.
- * @text_content: The string to add to the end of the file.
+ * create_file - Creates a file and writes text to it.
+ * @filename: A pointer to the name of the file to create.
+ * @text_content: A pointer to a string to write to the file.
  *
- * Return: If the function fails or filename is NULL - -1.
- *         If the file does not exist or the user lacks write permissions - -1.
- *         Otherwise - 1.
+ * Return: If the function fails to create the file or write to it - returns -1.
+ *         Otherwise, returns 1 on success.
  */
-int append_text_to_file(const char *filename, char *text_content)
+int create_file(const char *filename, char *text_content)
 {
-	int o, w, len = 0;
+    int fd, w, len = 0;
 
-	// Check if the filename is null
-	if (filename == NULL)
-		return (-1);
+    /* Check if filename is NULL */
+    if (filename == NULL)
+        return (-1);
 
-	// Check if the text content is null
-	if (text_content != NULL)
-	{
-		// Calculate the length of the text content
-		for (len = 0; text_content[len];)
-			len++;
-	}
+    /* Calculate the length of the text_content string */
+    if (text_content != NULL)
+    {
+        for (len = 0; text_content[len];)
+            len++;
+    }
 
-	// Open the file in write mode
-	o = open(filename, O_WRONLY | O_APPEND);
+    /* Open the file for creating, writing, and truncating if it exists */
+    fd = open(filename, O_CREAT | O_RDWR | O_TRUNC, 0600);
 
-	// Check if the file exists and the user has write permissions
-	if (o == -1)
-		return (-1);
+    /* Write the content of text_content to the file */
+    w = write(fd, text_content, len);
 
-	// Write the text content to the file
-	w = write(o, text_content, len);
+    /* Check for errors in file creation or writing */
+    if (fd == -1 || w == -1)
+        return (-1);
 
-	// Check if the write operation failed
-	if (w == -1)
-		return (-1);
+    /* Close the file */
+    close(fd);
 
-	// Close the file
-	close(o);
-
-	// Return success
-	return (1);
+    /* Return 1 on success */
+    return (1);
 }
